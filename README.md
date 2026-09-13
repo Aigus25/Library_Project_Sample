@@ -1,42 +1,90 @@
-# 🎓 Course Registration System (CLI) - Starter Template จัดทำโดย: Thitiwat Thaicharoen (AIGUS__)
+# 🎓 Course Registration System (CLI) - Starter Template
+**จัดทำโดย:** Thitiwat Thaicharoen (AIGUS__)
 
-ระบบจัดการข้อมูลรายวิชาและการลงทะเบียนเรียนแบบ Command Line Interface (CLI) พัฒนาด้วยภาษา Python เพื่อเป็นตัวอย่างศึกษาการจัดการข้อมูลไบนารีไฟล์ชนิด Fixed-length Record ด้วยโมดูล `struct`
-
----
-
-## 📌 Data Dictionary (โครงสร้างข้อมูลไบนารี)
-
-การจัดเก็บข้อมูลในไฟล์ `courses.dat` จะใช้โครงสร้างแบบ **Fixed-length Record** ขนาดรวม **105 Bytes** ต่อ 1 รายการ โดยใช้วิธีการจัดเก็บแบบ Little-Endian (`<`)
-
-| ฟิลด์ข้อมูล (Field) | ชนิดข้อมูล (Data Type) | ขนาด (Size) | คำอธิบาย (Description) | ตัวอย่างข้อมูล |
-| :--- | :--- | :--- | :--- | :--- |
-| **course_id** | `int` (`I`) | 4 Bytes | รหัสไอดีรายวิชา (Unsigned Int) | `1001` |
-| **code** | `str` (`15s`) | 15 Bytes | รหัสวิชา (UTF-8, Padding `\x00`) | `CS101` |
-| **title** | `str` (`50s`) | 50 Bytes | ชื่อรายวิชา (UTF-8, Padding `\x00`) | `Computer Programming` |
-| **category** | `str` (`20s`) | 20 Bytes | หมวดหมู่รายวิชา (เช่น Core, GenEd) | `Core` |
-| **credits** | `int` (`I`) | 4 Bytes | จำนวนหน่วยกิต | `3` |
-| **fee** | `float` (`f`) | 4 Bytes | ค่าธรรมเนียมรายวิชา (Single Precision) | `1500.00` |
-| **status** | `int` (`I`) | 4 Bytes | สถานะรายการ (`1` = Active, `0` = Deleted) | `1` |
-| **enrolled** | `int` (`I`) | 4 Bytes | สถานะลงทะเบียน (`0` = Available, `1` = Full) | `0` |
-
-> **Format String สำหรับ `struct`:** `"<I 15s 50s 20s I f I I"`  
-> **ขนาดรวมต่อ Record:** `struct.calcsize(FORMAT)` = **105 Bytes**
+ระบบจัดการข้อมูลรายวิชาและการลงทะเบียนเรียนแบบ Command Line Interface (CLI) พัฒนาด้วยภาษา Python เพื่อเป็นโครงสร้างตัวอย่าง (Starter Template) สำหรับการศึกษาการจัดการข้อมูลไบนารีไฟล์ชนิด Fixed-length Record ด้วยโมดูล `struct`
 
 ---
 
-## 🏗️ โครงสร้างฟังก์ชันแนวทาง (Skeleton Code)
+## 📌 Data Dictionary (โครงสร้างข้อมูลไบนารีทั้ง 3 ไฟล์)
 
-ไฟล์ตัวอย่างโค้ด `main_starter.py` สำหรับนำไปศึกษาและพัฒนาระบบต่อ:
+การจัดเก็บข้อมูลในระบบจะแบ่งออกเป็น 3 ไฟล์หลัก โดยใช้โครงสร้างแบบ **Fixed-length Record** จัดเก็บด้วยรูปแบบ Little-Endian (`<`)
 
-```python
-import struct
-import os
+### 1. ไฟล์ข้อมูลนักศึกษา (`students.dat`) - ขนาด 97 Bytes / Record
+| ฟิลด์ข้อมูล (Field) | ชนิดข้อมูล | ขนาด (Size) | คำอธิบาย (Description) |
+| :--- | :--- | :--- | :--- |
+| **student_id** | `int` (`Q`) | 8 Bytes | รหัสนักศึกษา 13 หลัก (Unsigned Long Long) |
+| **student_code** | `str` (`15s`) | 15 Bytes | รหัสย่อ (UTF-8, Padding `\x00`) |
+| **name** | `str` (`50s`) | 50 Bytes | ชื่อ-นามสกุล |
+| **major** | `str` (`20s`) | 20 Bytes | สาขาวิชา |
+| **year** | `int` (`I`) | 4 Bytes | ชั้นปี (1-4) |
+| **status** | `int` (`I`) | 4 Bytes | สถานะ (`1` = Active, `0` = Deleted) |
 
-FORMAT = "<I """1) """2) """3) """4) """5) # ## 'ab' 'r+b' 'rb' (Sample) (Soft (THB) (THB, (fixed-length) (records) (report.txt) (เฉพาะสถานะ * **ทดสอบระบบไฟล์ไบนารี:** **ศึกษา **เขียน - --- ------------------------------------------------------------------------------------- 0 1""" 1. 1.0 1000.00 1001 1002 105 11:15:00 1250.00 1500.00 15s 2 2. 2026-09-09 20s 3 3. 50s : Active Active) App At Available Avg CS101 Category Category""" Code Computer Core Course CourseID Courses Credits Currently Data Delete)""" Deleted Dictionary:** Encoding Endianness English Enrolled Enrolled/Full FILENAME="courses.dat" Fee GEN111 GenEd Generated I I" ID Little-Endian Logic Max Min Min/Max/Avg No Now Padding Prog RECORD_SIZE Registration Report Statistics Status Summary System TODO: Title Total UTF-8 Version `.ljust(N, ``` ```text `main_starter.py` `read(RECORD_SIZE)` `seek()` `struct` add_course(): append b'\x00')` bytes decode('utf-8') def delete_course(): encode f file flag generate_report(): null-byte offset="index" only) pack padding pass pointer read(RECORD_SIZE) report.txt seek() status="=" struct.pack() text unpack update_course(): view_all_courses(): | คำนวณ คำนวณค่า ค้นหา ดูรายวิชาทั้งหมด: ด้วย ตรวจสอบการย้าย ตัวอย่างรูปแบบรายงานสรุป ที่ นำ ประมวลผลสถิติ ปรับค่า รับค่า รับค่าจากผู้ใช้ ลงไฟล์""" ลบรายวิชา: วนลูป วนลูปอ่านทีละ วิธีนำไปศึกษาและต่อยอด สตริง สรุปรายงาน: หา อ่านข้อมูลทั้งหมด อ่านเฉพาะรายการที่ เขียนทับ""" เขียนทับตำแหน่งเดิม เขียนทับในโหมด เขียนแบบ เข้าใจชนิดข้อมูล เติม เปิดไฟล์โหมด เป็น เพิ่มรายวิชาใหม่: เมื่อพัฒนาระบบเสร็จสมบูรณ์ แก้ไขข้อมูล: และการสแกน และการใช้ และแยกตาม และใช้ แล้ว แล้วปรับ แล้วเขียนลงไฟล์ แล้วใช้ โปรแกรมจะสามารถสร้างรายงานสรุปในรูปแบบ ในฟังก์ชัน:** ได้ดังนี้: ไบต์ ไปเติมการคำนวณและคำสั่งของโมดูล 📄 🛠️>
+> **Format String:** `"<Q 15s 50s 20s I I"` | **RECORD_SIZE:** `97 Bytes`
 
 ---
 
-## 🔒 Intellectual Property & License
-- **Original Author:** Thitiwat Thaicharoen (AIGUS__)
-- **Project:** Course Registration System (COMPRO Project)
-- **Usage Notice:** โค้ดนี้เป็นเพียง **Starter Template (ตัวอย่างโครงสร้าง)** สำหรับการศึกษาเท่านั้น ห้ามนำไปคัดลอกเพื่อส่งซ้ำโดยไม่ได้รับการอนุญาต
+### 2. ไฟล์ข้อมูลรายวิชา (`courses.dat`) - ขนาด 105 Bytes / Record
+| ฟิลด์ข้อมูล (Field) | ชนิดข้อมูล | ขนาด (Size) | คำอธิบาย (Description) |
+| :--- | :--- | :--- | :--- |
+| **course_id** | `int` (`I`) | 4 Bytes | รหัสไอดีรายวิชา |
+| **course_code** | `str` (`15s`) | 15 Bytes | รหัสวิชา (เช่น CS101) |
+| **title** | `str` (`50s`) | 50 Bytes | ชื่อรายวิชา |
+| **category** | `str` (`20s`) | 20 Bytes | หมวดหมู่รายวิชา |
+| **credits** | `int` (`I`) | 4 Bytes | จำนวนหน่วยกิต |
+| **fee** | `float` (`f`) | 4 Bytes | ค่าธรรมเนียมรายวิชา |
+| **status** | `int` (`I`) | 4 Bytes | สถานะ (`1` = Active, `0` = Deleted) |
+| **is_full** | `int` (`I`) | 4 Bytes | สถานะที่นั่ง (`0` = Available, `1` = Full) |
+
+> **Format String:** `"<I 15s 50s 20s I f I I"` | **RECORD_SIZE:** `105 Bytes`
+
+---
+
+### 3. ไฟล์ข้อมูลการลงทะเบียน (`enrollments.dat`) - ขนาด 36 Bytes / Record
+| ฟิลด์ข้อมูล (Field) | ชนิดข้อมูล | ขนาด (Size) | คำอธิบาย (Description) |
+| :--- | :--- | :--- | :--- |
+| **enroll_id** | `int` (`I`) | 4 Bytes | รหัสการลงทะเบียน |
+| **student_id** | `int` (`Q`) | 8 Bytes | อ้างอิงรหัสนักศึกษา (13 หลัก) |
+| **course_id** | `int` (`I`) | 4 Bytes | อ้างอิงรหัสรายวิชา |
+| **enroll_date** | `str` (`20s`) | 20 Bytes | วันเวลาลงทะเบียน (`YYYY-MM-DD HH:MM:SS`) |
+| **status** | `int` (`I`) | 4 Bytes | สถานะ (`1` = Active, `0` = Cancelled) |
+
+> **Format String:** `"<I Q I 20s I"` | **RECORD_SIZE:** `36 Bytes`
+
+---
+
+## 🛠️ รายละเอียดเมนูการทำงาน (Application Design)
+
+* **1) แสดงข้อมูลในระบบ (View Sub-menu):**
+  * `1.1` ดูรายวิชาทั้งหมด (Courses)
+  * `1.2` ดูรายชื่อนักศึกษาทั้งหมด (Students)
+  * `1.3` ดูรายการลงทะเบียนทั้งหมด (Enrollments)
+* **2) เพิ่มข้อมูลใหม่ (Add Record):** เพิ่มข้อมูลลงไฟล์ `.dat` ด้วย `struct.pack()`
+* **3) แก้ไขข้อมูล (Update Record):** ค้นหาและเขียนทับตำแหน่งเดิมโดยใช้ `file.seek()` (In-Place Update)
+* **4) ลบข้อมูล (Delete Record):** ปรับสถานะ `status` เป็น `0` (Soft Delete)
+* **5) สร้างรายงานสรุป (Generate Report):** อ่านข้อมูลจากไฟล์ไบนารีมาประมวลผลแล้วบันทึกลง `report.txt`
+
+---
+
+## 📄 ตัวอย่างไฟล์รายงานสรุปที่ต้องสร้าง (`report.txt`)
+
+```text
+Course Registration System - Summary Report
+Generated At : 2026-09-13 13:14:47
+App Version  : 2.0
+Endianness   : Little-Endian
+Encoding     : UTF-8 (fixed-length)
+Files        : students.dat, courses.dat, enrollments.dat
+
+=== รายวิชา (Courses) ===
+-------------------------------------------------------------------------------------
+| ID     | Code     | Title                | Category     | Credits | Fee       | Status  | Full  |
+-------------------------------------------------------------------------------------
+| 1001   | CS001    | Cyber Programming    | General      | 4       | 0.00      | Active  | No    |
+-------------------------------------------------------------------------------------
+
+=== นักศึกษา (Students) ===
+----------------------------------------------------------------------
+| Student ID      | Code     | Name                      | Major             | Status  |
+----------------------------------------------------------------------
+| 6906022610001   | STD001   | กัญญารัตน์ สุขเจริญ          | Data Science      | Active  |
+----------------------------------------------------------------------
